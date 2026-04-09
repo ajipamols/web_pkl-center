@@ -1,0 +1,117 @@
+<?php
+session_start();
+
+// ===== Database connection =====
+$conn = mysqli_connect("localhost", "root", "", "pkl_center");
+if (!$conn) {
+    die("Koneksi gagal: " . mysqli_connect_error());
+}
+
+// ===== Fungsi langsung di index.php =====
+function redirect($url) {
+    header("Location: $url");
+    exit;
+}
+
+function isLoggedIn() {
+    return isset($_SESSION['user_id']);
+}
+
+function isAdmin() {
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+}
+
+// ===== Visitor Functions =====
+function recordVisitor() {
+    if(!isset($_SESSION['visited'])) {
+        $_SESSION['visited'] = true;
+        // Bisa ditambahkan query insert ke tabel visitor
+    }
+}
+
+function getTotalVisitors() {
+    return 1234; // nanti bisa diganti query database
+}
+
+function getTodayVisitors() {
+    return 56; // nanti bisa diganti query database
+}
+
+// ===== Catat visitor =====
+recordVisitor();
+
+// ===== Redirect jika sudah login =====
+if (isLoggedIn()) {
+    if (isAdmin()) {
+        redirect('admin/dashboard.php');
+    } else {
+        redirect('siswa/dashboard.php');
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKL Center - Selamat Datang</title>
+    <!-- Hubungkan CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.php" class="brand">🎓 PKL Center</a>
+            <ul class="nav-links">
+                <li><a href="index.php">Beranda</a></li>
+                <li><a href="public/login.php">Login</a></li>
+                <li><a href="public/register.php">Daftar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Welcome Section -->
+    <div class="welcome">
+        <div class="container">
+            <h1>Selamat Datang di PKL Center</h1>
+            <p>Portal Informasi Praktek Kerja Lapangan untuk Siswa</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="card">
+            <h2>Tentang PKL Center</h2>
+            <p>PKL Center adalah platform yang membantu siswa dalam mendapatkan informasi lengkap tentang tempat-tempat Praktek Kerja Lapangan (PKL) yang tersedia.</p>
+            <p>Untuk dapat melihat daftar tempat PKL dan informasi lebih lanjut, silakan <a href="public/login.php">login</a> atau <a href="public/register.php">daftar</a> terlebih dahulu.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3><?php echo getTotalVisitors(); ?></h3>
+                <p>Total Pengunjung</p>
+            </div>
+            <div class="stat-card">
+                <h3><?php echo getTodayVisitors(); ?></h3>
+                <p>Pengunjung Hari Ini</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Fitur PKL Center</h2>
+            <ul style="line-height:2;">
+                <li>✅ Informasi lengkap tempat PKL</li>
+                <li>✅ Data terverifikasi dan terpercaya</li>
+                <li>✅ Update berkala dari admin sekolah</li>
+                <li>✅ Mudah diakses kapan saja</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 PKL Center. All rights reserved.</p>
+    </footer>
+</body>
+</html>
