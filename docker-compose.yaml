@@ -3,12 +3,12 @@ version: '3.8'
 services:
   nginx:
     image: nginx:latest
-    container_name: nginx_app
+    container_name: nginx_9
     ports:
       - "8080:80"
     volumes:
-      - /home/comneta5/kelompok9/web_pkl-center/:/var/www/html
-      - /home/comneta5/kelompok9/web_pkl-center/nginx:/etc/nginx/conf.d
+      - /home/comneta5/kelompok9/pkl-center/:/var/www/html
+      - /home/comneta5/kelompok9/pkl-center/nginx:/etc/nginx/conf.d
     depends_on:
       - php
     networks:
@@ -16,9 +16,9 @@ services:
 
   php:
     image: php:8.1-fpm
-    container_name: php_app
+    container_name: php_9
     volumes:
-      - /home/comneta5/kelompok9/web_pkl-center/:/var/www/html
+      - /home/comneta5/kelompok9/pkl-center/:/var/www/html
     command: >
       sh -c "docker-php-ext-install mysqli pdo pdo_mysql && php-fpm"
     networks:
@@ -26,12 +26,12 @@ services:
 
   mysql:
     image: mysql:5.7
-    container_name: mysql_db
+    container_name: mysql_9
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: GantiPasswordKuat123!
       MYSQL_DATABASE: pkl_center
       MYSQL_USER: admin
-      MYSQL_PASSWORD: sulit
+      MYSQL_PASSWORD: AdminPkl@2026!
     volumes:
       - db_data:/var/lib/mysql
     networks:
@@ -39,12 +39,12 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_app
+    container_name: phpmyadmin_9
     ports:
-      - "8081:80"
+      - "127.0.0.1:8081:80"
     environment:
       PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: GantiPasswordKuat123!
     depends_on:
       - mysql
     networks:
